@@ -1,0 +1,37 @@
+---
+title: "Data Cleaning"
+format: html
+editor_options: 
+  chunk_output_type: console
+---
+# Setup
+
+```{r}
+library(tidyverse)
+library(here)
+library(janitor)
+```
+
+```{r}
+# Read in data
+bottle <- read_csv(here("data", "Bottle.csv"), locale = locale(encoding = "latin1"))
+cast <- read_csv(here("data", "Cast.csv"))
+```
+
+# Notes
+
+Cast count (Cst_Cnt) is the primary key in cast data
+Bottle count (Btl_Cnt) is the primary key in bottle data
+
+Metadata instructs to join tables on Cst_Cnt
+
+# Clean cast data
+
+```{r}
+glimpse(cast)
+
+# Let's get the date column into date type
+cast_clean <- cast |>
+  
+```
+
