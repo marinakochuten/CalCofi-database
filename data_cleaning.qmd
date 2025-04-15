@@ -10,6 +10,7 @@ editor_options:
 library(tidyverse)
 library(here)
 library(janitor)
+library(lubridate)
 ```
 
 ```{r}
@@ -17,6 +18,8 @@ library(janitor)
 bottle <- read_csv(here("data", "Bottle.csv"), locale = locale(encoding = "latin1"))
 cast <- read_csv(here("data", "Cast.csv"))
 ```
+
+
 
 # Notes
 
@@ -30,8 +33,96 @@ Metadata instructs to join tables on Cst_Cnt
 ```{r}
 glimpse(cast)
 
-# Let's get the date column into date type
-cast_clean <- cast |>
-  
+# Check DbSta_ID for non numeric values
+cast |>
+  count(DbSta_ID) |>
+  filter(is.na(as.numeric(DbSta_ID)))
+
+# Change DbSta_ID data type to numeric
+cast <- cast |>
+  mutate(DbSta_ID = as.numeric(DbSta_ID))
+
+# Check 
+glimpse(cast)
+
+# Change date column to date type
+cast <- cast |>
+  mutate(Date = mdy(Date))
+
+# Check
+glimpse(cast)
+
+# Check Rpt_Line for non-numeric values
+cast |>
+  count(Rpt_Line) |>
+  filter(is.na(as.numeric(Rpt_Line)))
+
+# Change Rpt_Line to numeric
+cast <- cast |>
+  mutate(Rpt_Line = as.numeric(Rpt_Line))
+
+# Check
+glimpse(cast)
+
+# Check Rpt_Line for non-numeric values
+cast |>
+  count(Rpt_Sta) |>
+  filter(is.na(as.numeric(Rpt_Sta)))
+
+# Change Rpt_Line to numeric
+cast <- cast |>
+  mutate(Rpt_Sta = as.numeric(Rpt_Sta))
+
+# Check
+glimpse(cast)
+
+# Check Cruz_Num for non-numeric values
+cast |>
+  count(Cruz_Num) |>
+  filter(is.na(as.numeric(Cruz_Num)))
+
+# Check
+glimpse(cast)
+
+unique(cast$Wave_Dir)
 ```
+
+# Clean bottle data
+
+```{r}
+glimpse(bottle)
+
+# Rename DIC Quality Comment to DIC_Quality_Comment
+bottle <- bottle |>
+  rename(DIC_Quality_Comment = "DIC Quality Comment")
+
+# Check
+glimpse(bottle)
+
+# Rename `R_Oxy_µmol/Kg`
+bottle <- bottle |>
+  rename(R_Oxy_µmol_Kg = `R_Oxy_µmol/Kg`)
+
+# Check
+glimpse(bottle)
+
+# Rename `Oxy_µmol/Kg`
+bottle <- bottle |>
+  rename(Oxy_µmol_Kg = `Oxy_µmol/Kg`)
+
+# Check
+glimpse(bottle)
+
+unique(bottle$DIC2) # all NA
+unique(bottle$TA2) # all NA
+unique(bottle$pH1) # all NA
+unique(bottle$pH2) # all NA
+unique(bottle$DIC_Quality_Comment) # all NA
+```
+
+
+
+
+
+
 
