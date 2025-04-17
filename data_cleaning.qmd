@@ -85,6 +85,13 @@ cast |>
 glimpse(cast)
 
 unique(cast$Wave_Dir)
+
+# Check for cols that have all NA
+data.frame(colSums(is.na(cast)) == nrow(cast))
+
+# export cleaned data as csv
+cast_clean <- cast
+write_csv(cast_clean, here("data", "processed", "cast_clean.csv"))
 ```
 
 # Clean bottle data
@@ -118,6 +125,17 @@ unique(bottle$TA2) # all NA
 unique(bottle$pH1) # all NA
 unique(bottle$pH2) # all NA
 unique(bottle$DIC_Quality_Comment) # all NA
+
+# Check for cols that have full NA
+data.frame(colSums(is.na(bottle)) == nrow(bottle))
+
+# Drop columns that are entirely NA
+bottle <- bottle |>
+  select(-c(DIC2, TA2, pH1, pH2, DIC_Quality_Comment))
+
+# Export cleaned data as csv
+bottle_clean <- bottle
+write_csv(cast_clean, here("data", "processed", "bottle_clean.csv"))
 ```
 
 
