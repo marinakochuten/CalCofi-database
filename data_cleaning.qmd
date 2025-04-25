@@ -139,6 +139,27 @@ write_csv(cast_clean, here("data", "processed", "bottle_clean.csv"))
 ```
 
 
+```{r}
+# filter to cols of interest for database ingesting
+bottle_clean_filtered <- bottle |>
+  select(c('Cst_Cnt', 'Btl_Cnt', 'Depthm', 'T_degC', 'Salnty'))
+
+write_csv(bottle_clean_filtered, here("data", "processed", "bottle_clean_filtered.csv"))
+
+cast_clean_filtered <- cast |>
+  select(c('Cst_Cnt',
+           'Date',
+           'Year',
+           'Month',
+           'Lat_Dec',
+           'Lat_Hem',
+           'Lon_Dec',
+           'Lon_Hem',
+           'Bottom_D'))
+
+write_csv(cast_clean_filtered, here("data", "processed", "cast_clean_filtered.csv"))
+
+```
 
 
 
