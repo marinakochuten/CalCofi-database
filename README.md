@@ -27,4 +27,6 @@ Both the Bottle and Cast tables were used in this analysis. A subset of the vari
 ```
 ## Acknowledgements
 
+This repository was created as an assignment for the graduate course EDS 213: Databases and Data Management in the Masters of Environmental Data Science (MEDS) program.
+
 
