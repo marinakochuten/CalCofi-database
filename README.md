@@ -10,10 +10,20 @@ This repository uses a realtional database hosting [CalCofi](https://calcofi.org
 
 ## Data and access
 
-https://calcofi.org/data/oceanographic-data/bottle-database/ 
+The full data for this project can be accessed at [CalCofi's Bottle Database](https://calcofi.org/data/oceanographic-data/bottle-database/ ): Oceanographic data collected from chemical analyses of seawater samples (1949 - present). 
+
+Both the Bottle and Cast tables were used in this analysis. A subset of the variables from each of these tables is ingested into the relational database for querying.
+
 
 ## Repository Structure
 
+```
+├── README.md
+├── cal_cofi.db                     # duckdb database with simplified bottle and cast tables
+├── cal_cofi.db.wal                 # WHAT IS THIS?
+├── data_cleaning.qmd               # Cleaning full Bottle and Cast data in prep for database ingestion
+└── create-database-tables.sql      # Ingesting clean Bottle and Cast data into database
+```
 ## Acknowledgements
 
 
