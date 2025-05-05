@@ -19,6 +19,7 @@ Both the Bottle and Cast tables were used in this analysis. A subset of the vari
 
 ```
 ├── README.md
+├── .gitignore
 ├── cal_cofi.db                     # duckdb database with simplified bottle and cast tables
 ├── cal_cofi.db.wal                 # WHAT IS THIS?
 ├── data_cleaning.qmd               # Cleaning full Bottle and Cast data in prep for database ingestion
