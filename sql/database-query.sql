@@ -1,17 +1,23 @@
 -- How does sea temperature and salinity vary over time?
 
 -- Sea temp averages
-CREATE TEMP TABLE Average_Temp AS
-    SELECT Cst_Cnt, T_degC, Year FROM bottle_table
-    JOIN cast_table USING (Cst_Cnt);
-
-SELECT Year, AVG(T_degC) AS Avg_Temp FROM Average_Temp
+CREATE TABLE Average_Temp AS
+    SELECT Year, AVG(T_degC) AS Avg_Temp FROM (
+        SELECT Cst_Cnt, T_degC, Year FROM bottle_table
+        JOIN cast_table USING (Cst_Cnt))
     GROUP BY Year;
+
+SELECT * FROM Average_Temp;
 
 -- Salinity averages
-CREATE TEMP TABLE Average_Salinity AS
-    SELECT Cst_Cnt, Salnty, Year FROM bottle_table
-    JOIN cast_table USING (Cst_Cnt);
-
-SELECT Year, AVG(Salnty) AS Avg_Salinity FROM Average_Salinity
+CREATE TABLE Average_Salinity AS
+    SELECT Year, AVG(Salnty) AS Avg_Salinity FROM (
+        SELECT Cst_Cnt, Salnty, Year FROM bottle_table
+        JOIN cast_table USING (Cst_Cnt))
     GROUP BY Year;
+
+SELECT * FROM Average_Salinity;
+
+-- Export query results as CSV
+COPY Average_Temp TO 'avg_temp.csv' (HEADER, DELIMITER ',');
+COPY Average_Temp TO 'avg_sal.csv' (HEADER, DELIMITER ',');
