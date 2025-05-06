@@ -1,0 +1,33 @@
+---
+title: "Visualizing query results"
+author: "Marina Kochuten"
+format: html
+---
+
+## Setup
+
+```{r}
+# Load libraries
+library(tidyverse)
+```
+
+```{r}
+# Read in data
+avg_temp <- read_csv(here::here("data", "avg_temp.csv"))
+avg_sal <- read_csv(here::here("data", "avg_sal.csv"))
+```
+
+## Plot time series
+
+```{r}
+# Temperature
+ggplot(avg_temp) +
+  geom_point(aes(x = Year, y = Avg_Temp))
+```
+
+```{r}
+# Salinity
+ggplot(avg_sal) +
+  geom_point(aes(x = Year, y = Avg_Salinity))
+```
+
