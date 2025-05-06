@@ -20,4 +20,5 @@ SELECT * FROM Average_Salinity;
 
 -- Export query results as CSV
 COPY Average_Temp TO 'avg_temp.csv' (HEADER, DELIMITER ',');
-COPY Average_Temp TO 'avg_sal.csv' (HEADER, DELIMITER ',');
+COPY Average_Salinity TO 'avg_sal.csv' (HEADER, DELIMITER ',');
+
