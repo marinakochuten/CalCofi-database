@@ -1,7 +1,13 @@
 ---
-title: "Visualizing query results"
+title: "CalCofi Database Query"
 author: "Marina Kochuten"
 format: html
+message: false
+warning: false
+embed-resources: true
+theme: lux
+editor_options: 
+  chunk_output_type: console
 ---
 
 ## Setup
@@ -9,25 +15,86 @@ format: html
 ```{r}
 # Load libraries
 library(tidyverse)
+library(DBI)
+library(duckdb)
+library(ggthemes)
 ```
 
 ```{r}
-# Read in data
-avg_temp <- read_csv(here::here("data", "avg_temp.csv"))
-avg_sal <- read_csv(here::here("data", "avg_sal.csv"))
+# Connect to database
+conn <- DBI::dbConnect(duckdb::duckdb(), dbdir='../sql/cal-cofi.db')
 ```
+
+## Queries
+
+How does sea temperature and salinity vary over time?
+
+```{r}
+# Sea temp averages
+avg_temp <- dbGetQuery(conn, "SELECT Year, AVG(T_degC) AS Avg_Temp 
+                                FROM (SELECT Cst_Cnt, T_degC, Year 
+                                      FROM bottle_table 
+                                      JOIN cast_table 
+                                      USING (Cst_Cnt)) 
+                                      GROUP BY Year")
+
+# Salinity averages
+avg_sal <- dbGetQuery(conn, "SELECT Year, AVG(Salnty) AS Avg_Salinity 
+                                FROM (SELECT Cst_Cnt, Salnty, Year 
+                                      FROM bottle_table 
+                                      JOIN cast_table USING (Cst_Cnt)) 
+                                      GROUP BY Year")
+```
+
 
 ## Plot time series
 
 ```{r}
-# Temperature
-ggplot(avg_temp) +
-  geom_point(aes(x = Year, y = Avg_Temp))
+#| fig-width: 9
+
+# Exclude outlier
+filtered_temp <- avg_temp |> 
+  filter(Avg_Temp < 14)
+
+# Temperature plot
+ggplot(filtered_temp, aes(x = Year, y = Avg_Temp)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE, color = "black") +
+  labs(y = "Average Sea Temperature (C)",
+       title = "Average Annual Sea Temperature From 1950-2020") +
+  scale_x_continuous(breaks = scales::breaks_pretty(n = 6)) +
+  scale_y_continuous(breaks = scales::breaks_pretty()) +
+  theme_wsj() +
+  theme(plot.title = element_text(size = 18, hjust = 1, margin = margin(0,0,15,0)),
+        axis.title.y = element_text(size = 12,
+                                    margin = margin(5, 15, 5, 0)),
+        plot.margin = margin(15,20,15,20))
+```
+
+
+```{r}
+#| fig-width: 9
+
+# Exclude outliers
+filtered_sal <- avg_sal |>
+  filter(Year != 2021, Avg_Salinity < 35.0)
+
+# Salinity plot
+ggplot(filtered_sal, aes(x = Year, y = Avg_Salinity)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE, color = "black") +
+  labs(y = "Average Annual Salinity (PSS)",
+       title = "Average Annual Salinity From 1950 - 2020") +
+  scale_x_continuous(breaks = scales::breaks_pretty(n = 6)) +
+  scale_y_continuous(breaks = scales::breaks_pretty()) +
+  theme_wsj() +
+  theme(plot.title = element_text(size = 18, hjust = 1, margin = margin(0,0,15,0)),
+        axis.title.y = element_text(size = 12,
+                                    margin = margin(5, 15, 5, 0)),
+        plot.margin = margin(15,20,15,20))
 ```
 
 ```{r}
-# Salinity
-ggplot(avg_sal) +
-  geom_point(aes(x = Year, y = Avg_Salinity))
+DBI::dbDisconnect(conn, shutdown = TRUE)
 ```
 
