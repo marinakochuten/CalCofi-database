@@ -18,14 +18,17 @@ Both the Bottle and Cast tables were used in this analysis. A subset of the vari
 ## Repository Structure
 
 ```
+.
 ├── README.md
 ├── .gitignore
-├── R
-|
-├── sql
-├── cal_cofi.db                     # duckdb database with simplified bottle and cast tables
-├── data_cleaning.qmd               # Cleaning full Bottle and Cast data in prep for database ingestion
-└── create-database-tables.sql      # Ingesting clean Bottle and Cast data into database
+├── R/
+│   ├── data_cleaning.qmd              # Cleaning full Bottle and Cast data in prep for database ingestion
+│   ├── visualize_query.qmd            # Query database and visualize results in R
+│   └── visualize_query.html           # Rendered R query and vizualization 
+└── sql/
+    ├── cal_cofi.db                     # duckdb database with simplified bottle and cast tables            
+    ├── create-database-tables.sql      # Ingesting clean Bottle and Cast data into database
+    └── database-query.sql              # Query database in SQL
 ```
 ## Acknowledgements
 
