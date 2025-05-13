@@ -6,7 +6,7 @@ This repository uses a realtional database hosting [CalCofi](https://calcofi.org
 
 **Purposes of this project:**
 - Practice prepping data and ingesting into a relational database
-- Practive using SQL for querying
+- Practice using SQL for querying
 
 ## Data and access
 
@@ -20,8 +20,10 @@ Both the Bottle and Cast tables were used in this analysis. A subset of the vari
 ```
 ├── README.md
 ├── .gitignore
+├── R
+|
+├── sql
 ├── cal_cofi.db                     # duckdb database with simplified bottle and cast tables
-├── cal_cofi.db.wal                 # WHAT IS THIS?
 ├── data_cleaning.qmd               # Cleaning full Bottle and Cast data in prep for database ingestion
 └── create-database-tables.sql      # Ingesting clean Bottle and Cast data into database
 ```
