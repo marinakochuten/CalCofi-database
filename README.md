@@ -14,6 +14,8 @@ The full data for this project can be accessed at [CalCofi's Bottle Database](ht
 
 Both the Bottle and Cast tables were used in this analysis. A subset of the variables from each of these tables is ingested into the relational database for querying.
 
+To reproduce this work, the database, `cal_cofi.db`, and the anaylsis file, `visualize_query.qmd`, are required. Find all dependencies and system requirements in `session_info`. 
+
 
 ## Repository Structure
 
@@ -24,7 +26,8 @@ Both the Bottle and Cast tables were used in this analysis. A subset of the vari
 ├── R/
 │   ├── data_cleaning.qmd              # Cleaning full Bottle and Cast data in prep for database ingestion
 │   ├── visualize_query.qmd            # Query database and visualize results in R
-│   └── visualize_query.html           # Rendered R query and vizualization 
+│   ├── visualize_query.html           # Rendered R query and vizualization 
+│   └── session_info                   # Version and dependencies for reproducability 
 └── sql/
     ├── cal_cofi.db                     # duckdb database with simplified bottle and cast tables            
     ├── create-database-tables.sql      # Ingesting clean Bottle and Cast data into database
