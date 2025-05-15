@@ -3,6 +3,8 @@ data/
 
 .DS_Store
 
+cal-cofi.db.wal
+
 # History files
 .Rhistory
 .Rapp.history

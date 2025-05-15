@@ -7,7 +7,7 @@ warning: false
 embed-resources: true
 theme: lux
 editor_options: 
-  chunk_output_type: console
+  chunk_output_type: inline
 ---
 
 ## Setup
@@ -20,9 +20,12 @@ library(duckdb)
 library(ggthemes)
 ```
 
+You may need to update the path to the database to match your file structure:
+
 ```{r}
 # Connect to database
-conn <- DBI::dbConnect(duckdb::duckdb(), dbdir='../sql/cal-cofi.db')
+db_path <- '../sql/cal-cofi.db' # Path to database
+conn <- DBI::dbConnect(duckdb::duckdb(), dbdir=db_path)
 ```
 
 ## Queries
@@ -46,13 +49,12 @@ avg_sal <- dbGetQuery(conn, "SELECT Year, AVG(Salnty) AS Avg_Salinity
                                       GROUP BY Year")
 ```
 
-
 ## Plot time series
 
 ```{r}
 #| fig-width: 9
 
-# Exclude outlier
+# Exclude outlier to better visualize overall trend
 filtered_temp <- avg_temp |> 
   filter(Avg_Temp < 14)
 
@@ -71,11 +73,12 @@ ggplot(filtered_temp, aes(x = Year, y = Avg_Temp)) +
         plot.margin = margin(15,20,15,20))
 ```
 
+This plot shows that since 1950, average sea temperature has been increasing in California.
 
 ```{r}
 #| fig-width: 9
 
-# Exclude outliers
+# Exclude outliers to better visualize overall trend
 filtered_sal <- avg_sal |>
   filter(Year != 2021, Avg_Salinity < 35.0)
 
@@ -94,7 +97,9 @@ ggplot(filtered_sal, aes(x = Year, y = Avg_Salinity)) +
         plot.margin = margin(15,20,15,20))
 ```
 
+This plot shows that the average ocean salinity in California has been declining since 1950. This phenomena has been observed near the poles as a result of glacial melt introducing freshwater to the oceans, but I find it interesting that this is being observed off the coast of California as well.
+
 ```{r}
+# Disconnect from database
 DBI::dbDisconnect(conn, shutdown = TRUE)
 ```
-
